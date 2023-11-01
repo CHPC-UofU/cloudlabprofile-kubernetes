@@ -44,7 +44,7 @@ lan.bandwidth = 1000000  # This is in kbps.
 # Set up node names:
 aliases = []
 for i in range(params.node_count):
-    aliases.append(f"node{i}")
+    aliases.append(f'node{i}')
 
 # Set up the nodes:
 ipv4_last_octet = 1
