@@ -1,5 +1,4 @@
-"""
-A test profile with N Rocky Linux 9 nodes designed to test Kubernetes installation and configuration automation.
+"""A test profile with N Rocky Linux 9 nodes designed to test Kubernetes installation and configuration automation.
 
 Instructions:
 Wait for the profile instance to start. Then begin work.
@@ -44,12 +43,12 @@ lan.bandwidth = 1000000  # This is in kbps.
 # Set up node names:
 aliases = []
 for i in range(params.node_count):
-    aliases.append("node%02d" % i)
+    aliases.append("vm%02d" % i)
 
 # Set up the nodes:
 ipv4_last_octet = 1
 for i in range(params.node_count):
-    node = request.RawPC(aliases[i])
+    node = request.XenVM(aliases[i])
     node.disk_image = OS_IMAGE
 
     ipv4_addr = "10.10.1." + str(ipv4_last_octet)
