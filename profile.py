@@ -59,6 +59,8 @@ for i in range(params.node_count):
     iface.addAddress(pg.IPv4Address(ipv4_addr, "255.255.255.0"))
     lan.addInterface(iface)
 
+    request.addResource(node)
+
 # Add LAN to request:
 request.addResource(lan)
 
