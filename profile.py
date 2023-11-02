@@ -36,8 +36,9 @@ if params.public_ip_count < 2:
     pc.reportError(portal.ParameterError('You must allocate at least 1 additional public ip.', ['public_ip_count']))
 pc.verifyParameters()
 
-# Create LAN:
+# Create 1 GB/s LAN:
 lan = pg.LAN()
+lan.bandwidth = 1000000 # This is in kbps.
 
 # Set up node names:
 aliases = []
@@ -49,6 +50,7 @@ ipv4_last_octet = 1
 for i in range(params.node_count):
     node = request.XenVM(aliases[i])
     node.disk_image = OS_IMAGE
+    request.addResource(node)
 
     ipv4_addr = "10.10.1." + str(ipv4_last_octet)
     ipv4_last_octet += 1
@@ -57,13 +59,11 @@ for i in range(params.node_count):
     iface.addAddress(pg.IPv4Address(ipv4_addr, "255.255.255.0"))
     lan.addInterface(iface)
 
-    request.addResource(node)
-
 # Add LAN to request:
 request.addResource(lan)
 
 # Request a pool of dynamic publicly routable ip addresses - pool name cannot contain underscores - hidden bug
-addressPool = igext.AddressPool('addressPool', int(params.public_ip_count))
+addressPool = igext.AddressPool('MetalLBPool', int(params.public_ip_count))
 request.addResource(addressPool)
 
 # Output RSpec
