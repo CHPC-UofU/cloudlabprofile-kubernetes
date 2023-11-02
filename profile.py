@@ -41,7 +41,11 @@ if params.public_ip_count < 2:
 context.verifyParameters()
 
 # Create 1 GB/s LAN:
-lan = request.LAN()
+if params.node_count == 2:
+    lan = request.Link()
+else:
+    lan = request.LAN()
+
 lan.bandwidth = 1000000  # This is in kbps.
 
 # Set up the nodes:
