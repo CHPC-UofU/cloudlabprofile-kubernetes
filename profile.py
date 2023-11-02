@@ -36,9 +36,8 @@ if params.public_ip_count < 2:
     pc.reportError(portal.ParameterError('You must allocate at least 1 additional public ip.', ['public_ip_count']))
 pc.verifyParameters()
 
-# Create LAN with 1 GB/s bandwidth:
+# Create LAN:
 lan = pg.LAN()
-lan.bandwidth = 1000000  # This is in kbps.
 
 # Set up node names:
 aliases = []

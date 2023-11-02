@@ -1,3 +1,1 @@
-ansible-core==2.14.11
 geni-lib==0.9.9.4
-netaddr==0.9.0
