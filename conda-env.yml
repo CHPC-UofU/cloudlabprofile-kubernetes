@@ -6,4 +6,5 @@ dependencies:
   - pip
   - python=3.10
   - pip:
+      - ansible
       - geni-lib==0.9.9.4
