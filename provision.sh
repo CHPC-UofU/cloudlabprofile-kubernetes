@@ -4,7 +4,7 @@
 set -euo pipefail
 
 # Variables:
-export ANSIBLE_VERBOSITY=1
+export ANSIBLE_VERBOSITY=2
 
 cd ./playbooks
-ansible-playbook -v -i ./inventory/hosts.yml ./prerequisites.yml
+ansible-playbook -i ./inventory/hosts.yml ./prerequisites.yml
