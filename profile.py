@@ -56,7 +56,7 @@ for i in range(params.node_count):
     node.disk_image = OS_IMAGE
 
     iface = node.addInterface("eth1")
-    iface.addAddress(pg.IPv4Address(ipv4_addr, "255.255.255.0"))
+    # iface.addAddress(pg.IPv4Address(ipv4_addr, "255.255.255.0"))
     lan.addInterface(iface)
 
     # request.addResource(node)
