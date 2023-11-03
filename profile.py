@@ -9,7 +9,8 @@ import geni.rspec.pg as pg
 import geni.rspec.igext as igext
 
 # Define OS image
-OS_IMAGE = 'urn:publicid:IDN+emulab.net+image+emulab-ops:ROCKY9-64-STD'
+# OS_IMAGE = 'urn:publicid:IDN+emulab.net+image+emulab-ops:ROCKY9-64-STD'
+OS_IMAGE = 'urn:publicid:IDN+emulab.net+image+emulab-ops//UBUNTU22-64-STD'
 
 # Create a portal context, needed to define parameters
 context = portal.Context()
