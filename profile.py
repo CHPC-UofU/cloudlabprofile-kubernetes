@@ -51,7 +51,7 @@ for i in range(params.node_count):
     node = request.XenVM(vmName)
     node.cores = 4
     node.ram = 8192
-    node.routable_control_ip = True
+    node.routable_control_ip = False
     node.disk_image = OS_IMAGE
     iface = node.addInterface("eth1")
     lan.addInterface(iface)
