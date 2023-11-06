@@ -46,13 +46,13 @@ lan = request.LAN()
 lan.best_effort = True
 
 # Add VMs to the request that can be accessed from the public Internet.
-for i in range(params.nodeCount):
+for i in range(params.node_count):
     vmName = "%s-%d" % ('vm', i)
     node = request.XenVM(vmName)
     node.cores = 4
     node.ram = 8192
     node.routable_control_ip = True
-    node.disk_image = params.osImage
+    node.disk_image = OS_IMAGE
     iface = node.addInterface("eth1")
     lan.addInterface(iface)
 
