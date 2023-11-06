@@ -10,7 +10,6 @@ import geni.rspec.igext as igext
 
 # Define OS image
 OS_IMAGE = 'urn:publicid:IDN+emulab.net+image+emulab-ops:ROCKY9-64-STD'
-# OS_IMAGE = 'urn:publicid:IDN+emulab.net+image+emulab-ops//UBUNTU22-64-STD'
 
 # Create a portal context, needed to define parameters
 context = portal.Context()
@@ -57,17 +56,17 @@ for i in range(params.node_count):
     node.disk_image = OS_IMAGE
 
     iface = node.addInterface("eth1")
-    # iface.addAddress(pg.IPv4Address(ipv4_addr, "255.255.255.0"))
+    iface.addAddress(pg.IPv4Address(ipv4_addr, "255.255.255.0"))
     lan.addInterface(iface)
 
-    # request.addResource(node)
+    request.addResource(node)
 
 # Add LAN to request:
-# request.addResource(lan)
+request.addResource(lan)
 
 # Request a pool of dynamic publicly routable ip addresses - pool name cannot contain underscores - hidden bug
-# addressPool = igext.AddressPool('MetalLBPool', int(params.public_ip_count))
-# request.addResource(addressPool)
+addressPool = igext.AddressPool('MetalLBPool', int(params.public_ip_count))
+request.addResource(addressPool)
 
 # Output RSpec
 context.printRequestRSpec(request)
