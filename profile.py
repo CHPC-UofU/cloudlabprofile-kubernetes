@@ -65,8 +65,8 @@ for i in range(params.node_count):
 request.addResource(lan)
 
 # Request a pool of dynamic publicly routable ip addresses - pool name cannot contain underscores - hidden bug
-addressPool = igext.AddressPool('MetalLBPool', int(params.public_ip_count))
-request.addResource(addressPool)
+# addressPool = igext.AddressPool('MetalLBPool', int(params.public_ip_count))
+# request.addResource(addressPool)
 
 # Output RSpec
 context.printRequestRSpec(request)
