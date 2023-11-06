@@ -1,11 +1,12 @@
-"""A test profile with N Rocky Linux 9 nodes designed to test Kubernetes installation and configuration automation.
+#!/usr/bin/env python
+
+"""This CloudLab profile allocates N Rocky9 XenVM nodes, allocates routable IPv4s for each, adds an address pool of N IPv4s (for MetalLB), and connects them directly together via a LAN.
 
 Instructions:
-Wait for the profile instance to start. Then begin work.
+Click on any node in the topology and choose the `shell` menu item. When your shell window appears, use `ping` to test the link.
 """
 
 import geni.portal as portal
-import geni.rspec.pg as pg
 import geni.rspec.igext as igext
 
 # Define OS image
@@ -21,7 +22,7 @@ request = context.makeRequestRSpec()
 context.defineParameter('node_count',
                         'The number of nodes to allocate',
                         portal.ParameterType.INTEGER,
-                        2)
+                        3)
 context.defineParameter('public_ip_count',
                         'The number of additional public IPs to allocate',
                         portal.ParameterType.INTEGER,
@@ -30,9 +31,9 @@ context.defineParameter('public_ip_count',
 params = context.bindParameters()
 
 # Validate parameters:
-if params.node_count < 2:
+if params.node_count < 3:
     context.reportError(
-        portal.ParameterError('You must allocate at least 1 additional node.',
+        portal.ParameterError('You must allocate at least three nodes.',
                                               ['node_count']))
 if params.public_ip_count < 2:
     context.reportError(
@@ -40,33 +41,24 @@ if params.public_ip_count < 2:
                               ['public_ip_count']))
 context.verifyParameters()
 
-# Create a LAN:
-if params.node_count == 2:
-    lan = request.Link()
-else:
-    lan = request.LAN()
+# Create the best effort LAN between the VM nodes.
+lan = request.LAN()
+lan.best_effort = True
 
-# Set up the nodes:
-ipv4_last_octet = 1
-for i in range(params.node_count):
-    ipv4_addr = "10.10.1." + str(ipv4_last_octet)
-    ipv4_last_octet += 1
-
-    node = request.XenVM("vm%02d" % i)
-    node.disk_image = OS_IMAGE
-
+# Add VMs to the request that can be accessed from the public Internet.
+for i in range(params.nodeCount):
+    vmName = "%s-%d" % ('vm', i)
+    node = request.XenVM(vmName)
+    node.cores = 4
+    node.ram = 8192
+    node.routable_control_ip = True
+    node.disk_image = params.osImage
     iface = node.addInterface("eth1")
-    iface.addAddress(pg.IPv4Address(ipv4_addr, "255.255.255.0"))
     lan.addInterface(iface)
 
-    request.addResource(node)
-
-# Add LAN to request:
-request.addResource(lan)
-
 # Request a pool of dynamic publicly routable ip addresses - pool name cannot contain underscores - hidden bug
-# addressPool = igext.AddressPool('MetalLBPool', int(params.public_ip_count))
-# request.addResource(addressPool)
+addressPool = igext.AddressPool('MetalLBPool', int(params.public_ip_count))
+request.addResource(addressPool)
 
-# Output RSpec
+# Print the RSpec to the enclosing page.
 context.printRequestRSpec(request)
